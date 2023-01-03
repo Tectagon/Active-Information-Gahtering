@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo -u tooluser docker kill toolserver
+sudo -u tooluser docker rm toolserver
+userdel tooluser
+rm -r /home/tooluser
