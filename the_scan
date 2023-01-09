@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nmap -sn -oG /home/up.txt 192.168.1.0/24
+nmap -sn -sP --unprivileged -oG /home/up.txt 192.168.1.0/24
 cat /home/up.txt | grep "Up" | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' > /home/ips.txt
 for ip in $(cat /home/ips.txt); do nmap -sS $ip -p- --open -r -oG /home/$ip.txt; done
 for ip in $(cat /home/ips.txt); do nmap -O -sV $ip -p $(cat /home/$ip.txt | grep -oE '[0-9]{1,5}\/open/(tcp|udp)\/\/' | awk -F '/' '{print $1}' | sed -z 's/\n/,/g;s/,$/\n/') --open -oG /home/$ip.txt; done
