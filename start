@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Create User
+#Create user to run container with restricted shell (for security)
 useradd -m -s /bin/rbash tooluser
 usermod -aG docker tooluser
 echo "Enter password for low privilege user (tooluser):"
@@ -17,12 +17,15 @@ mkdir -p /home/tooluser/out
 chown tooluser:tooluser /home/tooluser/out
 chmod -R 755 /home/tooluser/out
 
-#Create Environment
+#Copy files over to user running the container
 cp Dockerfile /home/tooluser/Dockerfile
 chmod 755 /home/tooluser/Dockerfile
 cp the_scan /home/tooluser/the_scan
 chmod 755 /home/tooluser/the_scan
 
+#Run the image and script
 sudo -u tooluser podman build -t toolserver /home/tooluser/
 sudo -u tooluser podman run -d --network bridge --cap-add NET_RAW -v /home/tooluser/out:/home --name toolserver toolserver
+
+#For debugging
 #sudo -u tooluser podman run -it --entrypoint /bin/bash --network=bridge --cap-add=NET_RAW --name toolserver toolserver

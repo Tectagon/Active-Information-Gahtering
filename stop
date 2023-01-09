@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#Destroy container and delete user
 sudo -u tooluser podman kill toolserver
 sudo -u tooluser podman rm toolserver
 killall -u tooluser
