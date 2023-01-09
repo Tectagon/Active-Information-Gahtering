@@ -1,5 +1,5 @@
 # Active Information Gathering Script
-Podman image that performs recognisance over a network
+Podman image that performs recognisance over a network  
 Podman rootless is used because docker-deamon running as root can be a potential security risk
 
 ## RUN
