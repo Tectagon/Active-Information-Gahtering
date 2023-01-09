@@ -1,4 +1,5 @@
 # Active Information Gathering Script
+Podman image that performs recognisance over a network
 
 ## RUN
 Use `sudo ./start` to create low privilege user and run the docker image
