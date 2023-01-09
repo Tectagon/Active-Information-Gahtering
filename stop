@@ -1,6 +1,7 @@
 #!/bin/bash
 
-sudo -u tooluser docker kill toolserver
-sudo -u tooluser docker rm toolserver
+sudo -u tooluser podman kill toolserver
+sudo -u tooluser podman rm toolserver
+killall -u tooluser
 userdel tooluser
 rm -r /home/tooluser

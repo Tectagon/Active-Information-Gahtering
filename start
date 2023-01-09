@@ -8,13 +8,13 @@ read -s user_pass
 echo -e "$user_pass\n$user_pass\n" | passwd tooluser
 rm /home/tooluser/.*
 mkdir -p /home/tooluser/bin
-chown cdoalladmin:cdoalladmin /home/tooluser/bin
+chown root:root /home/tooluser/bin
 chmod -R 755 /home/tooluser/bin
 echo "PATH=\$HOME/bin" > /home/tooluser/.bashrc
-chown cdoalladmin:cdoalladmin /home/tooluser/.bashrc
+chown root:root /home/tooluser/.bashrc
 chmod 755 /home/tooluser/.bashrc
 mkdir -p /home/tooluser/out
-chown cdoalladmin:cdoalladmin /home/tooluser/out
+chown tooluser:tooluser /home/tooluser/out
 chmod -R 755 /home/tooluser/out
 
 #Create Environment
@@ -23,11 +23,6 @@ chmod 755 /home/tooluser/Dockerfile
 cp the_scan /home/tooluser/the_scan
 chmod 755 /home/tooluser/the_scan
 
-#Change user and run
-sudo -i -u tooluser bash << EOF
-echo "Changed user to \$(whoami)"
-docker build -t toolserver /home/tooluser/
-docker run --cpus="3.5" -v /home/tooluser/out:/home --name toolserver -d toolserver
-EOF
-
-#sudo -u tooluser docker run -it --entrypoint /bin/bash --name toolserver toolserver
+sudo -u tooluser podman build -t toolserver /home/tooluser/
+sudo -u tooluser podman run -d --network bridge --cap-add NET_RAW -v /home/tooluser/out:/home --name toolserver toolserver
+#sudo -u tooluser podman run -it --entrypoint /bin/bash --network=bridge --cap-add=NET_RAW --name toolserver toolserver
