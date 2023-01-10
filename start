@@ -2,26 +2,25 @@
 
 #Create user to run container with restricted shell (for security)
 useradd -m -s /bin/rbash tooluser
-usermod -aG docker tooluser
 echo "Enter password for low privilege user (tooluser):"
 read -s user_pass
 echo -e "$user_pass\n$user_pass\n" | passwd tooluser
 rm /home/tooluser/.*
 mkdir -p /home/tooluser/bin
 chown root:root /home/tooluser/bin
-chmod -R 755 /home/tooluser/bin
+chmod -R 711 /home/tooluser/bin
 echo "PATH=\$HOME/bin" > /home/tooluser/.bashrc
 chown root:root /home/tooluser/.bashrc
-chmod 755 /home/tooluser/.bashrc
+chmod 711 /home/tooluser/.bashrc
 mkdir -p /home/tooluser/out
 chown tooluser:tooluser /home/tooluser/out
-chmod -R 755 /home/tooluser/out
+chmod -R 644 /home/tooluser/out
 
 #Copy files over to user running the container
 cp Dockerfile /home/tooluser/Dockerfile
-chmod 755 /home/tooluser/Dockerfile
+chmod 744 /home/tooluser/Dockerfile
 cp the_scan /home/tooluser/the_scan
-chmod 755 /home/tooluser/the_scan
+chmod 744 /home/tooluser/the_scan
 
 #Run the image and script
 sudo -u tooluser podman build -t toolserver /home/tooluser/
